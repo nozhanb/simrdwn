@@ -56,21 +56,32 @@ def update_args(args):
     # set directory structure
 
     # args.src_dir = os.path.dirname(os.path.realpath(__file__))
+    
+    #@ args.core_dir: contains the path of the current directory from which the file is executed. 
+    #@ Check this: https://stackoverflow.com/questions/7783308/os-path-dirname-file-returns-empty)
     args.core_dir = os.path.dirname(os.path.realpath(__file__))
+    #@ args.this_file: path to the 'simrdwn.py' in core directory
     args.this_file = os.path.join(args.core_dir, 'simrdwn.py')
+    #@ args.simrdwn_dir: goes two directories back (for every os.path.dirname())
     args.simrdwn_dir = os.path.dirname(os.path.dirname(args.core_dir))
+    #@ args.results_topdir: make a directory called results
     args.results_topdir = os.path.join(args.simrdwn_dir, 'results')
+    #@ args.tf_cfg_dir: creates tf\cfg (tensorflow configuration directory probably!)
     args.tf_cfg_dir = os.path.join('tf', 'cfg')
+    #@ args.yolt_plot_file: path to yolt_plot_loss.py in core directory
     args.yolt_plot_file = os.path.join(args.core_dir, 'yolt_plot_loss.py')
+    #@ args.tf_plot_file: path to tf_plot_loss.py in core directory
     args.tf_plot_file = os.path.join(args.core_dir, 'tf_plot_loss.py')
 
     # if train_data_dir is not a full directory, set it as within simrdwn
+    #@ Set the path to train_data directory
     if args.train_data_dir.startswith('/'):
         pass
     else:
         args.train_data_dir = os.path.join(args.simrdwn_dir, 'data/train_data')
 
     # keep raw testims dir if it starts with a '/'
+    #@ Set the path to test images directory
     if args.testims_dir.startswith('/'):
         args.testims_dir_tot = args.testims_dir
     else:
@@ -85,11 +96,14 @@ def update_args(args):
         raise ValueError("Test images directory does not exist: "
                          "{}".format(args.testims_dir_tot))
 
+    #@ set yolt directory
     if args.framework.upper().startswith('YOLT'):
         args.yolt_dir = os.path.join(args.simrdwn_dir, args.framework)
     else:
         args.yolt_dir = os.path.join(args.simrdwn_dir, 'yolt')
+    #@ Set yolt weight directory
     args.yolt_weight_dir = os.path.join(args.yolt_dir, 'input_weights')
+    #@ Set yolot config directory
     args.yolt_cfg_dir = os.path.join(args.yolt_dir, 'cfg')
 
     ##########################################
