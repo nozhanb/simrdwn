@@ -96,18 +96,20 @@ def update_args(args):
         raise ValueError("Test images directory does not exist: "
                          "{}".format(args.testims_dir_tot))
 
-    #@ set yolt directory
+    #@ Check if the framework starts with "YOLT". If so, create a directory starting with "YOLT" inside the root directory 
+    #@ (i.e. args.simrdwn_dir). If not, create a directory starting with "yolt" inside the root driectory.
     if args.framework.upper().startswith('YOLT'):
         args.yolt_dir = os.path.join(args.simrdwn_dir, args.framework)
     else:
         args.yolt_dir = os.path.join(args.simrdwn_dir, 'yolt')
-    #@ Set yolt weight directory
+    #@ create the "input_weights" directory inside args.yolt_dir.
     args.yolt_weight_dir = os.path.join(args.yolt_dir, 'input_weights')
-    #@ Set yolot config directory
+    #@ create the "cfg" directory inside args.yolt_dir.
     args.yolt_cfg_dir = os.path.join(args.yolt_dir, 'cfg')
 
     ##########################################
     # Get datetime and set outlog file
+    #@ if args.append_date_string == True, the datetime string will be appended to the output file!
     args.now = datetime.datetime.now()
     if bool(args.append_date_string):
         args.date_string = args.now.strftime('%Y_%m_%d_%H-%M-%S')
@@ -117,9 +119,11 @@ def update_args(args):
     else:
         args.date_string = ''
         args.res_name = args.mode + '_' + args.framework + '_' + args.outname
-
+    #@ Create the args.res_name directory inside results directory (i.e. args.results_topdir).
     args.results_dir = os.path.join(args.results_topdir, args.res_name)
+    #@ Create a directory called "logs" inside the args.res_name directory.
     args.log_dir = os.path.join(args.results_dir, 'logs')
+    #@ Create the following file inside logs directory.
     args.log_file = os.path.join(args.log_dir, args.res_name + '.log')
     args.yolt_loss_file = os.path.join(args.log_dir, 'yolt_loss.txt')
     args.labels_log_file = os.path.join(args.log_dir, 'labels_list.txt')
