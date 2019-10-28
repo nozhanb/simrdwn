@@ -123,16 +123,19 @@ def update_args(args):
     args.results_dir = os.path.join(args.results_topdir, args.res_name)
     #@ Create a directory called "logs" inside the args.res_name directory.
     args.log_dir = os.path.join(args.results_dir, 'logs')
-    #@ Create the following file inside logs directory.
+    #@ Create the following three files inside logs directory.
     args.log_file = os.path.join(args.log_dir, args.res_name + '.log')
     args.yolt_loss_file = os.path.join(args.log_dir, 'yolt_loss.txt')
     args.labels_log_file = os.path.join(args.log_dir, 'labels_list.txt')
 
     # set total location of test image file list
+    #@ Creates some directory inside the results directory
     args.test_presliced_list_tot = os.path.join(
         args.results_topdir, args.test_presliced_list)
     # args.test_presliced_list_tot = os.path.join(args.simrdwn_dir,
     #   args.test_presliced_list)
+    #@ If the condition is met create these two files 'test_splitims.tfrecord' and 'predictions.tfrecord' (somewhere) 
+    #@ inside results (sub)directory.
     if len(args.test_presliced_tfrecord_path) > 0:
         args.test_presliced_tfrecord_tot = os.path.join(
             args.results_topdir, args.test_presliced_tfrecord_path,
@@ -143,6 +146,7 @@ def update_args(args):
         args.test_presliced_tfrecord_tot = ''
         args.test_tfrecord_out = ''
 
+    #@ If condition is (not) met set the following path(s) 
     if len(args.test_presliced_list) > 0:
         args.test_splitims_locs_file = args.test_presliced_list_tot
     else:
@@ -158,15 +162,18 @@ def update_args(args):
         args.results_dir, args.val_df_root_init)
     args.val_df_path_aug = os.path.join(args.results_dir, args.val_df_root_aug)
 
+    #@ Put the 'frozen_model/frozen_inference_graph.pb' file in results/...
     args.inference_graph_path_tot = os.path.join(
         args.results_topdir, args.train_model_path,
         'frozen_model/frozen_inference_graph.pb')
 
     # and yolt cfg file
+    #@ Creates a path somewhere in results/logs/...
     args.yolt_cfg_file_tot = os.path.join(args.log_dir, args.yolt_cfg_file)
 
     # weight and cfg files
     # TRAIN
+    #@ If the condition is met creates the following paths somewhere in /smirdwn/YOLT(yolt)/cfg/...
     if args.mode.upper() == 'TRAIN':
         args.weight_file_tot = os.path.join(
             args.yolt_weight_dir, args.weight_file)
@@ -207,6 +214,7 @@ def update_args(args):
     tf_cfg_base = os.path.basename(args.tf_cfg_train_file)
     # tf_cfg_root = tf_cfg_base.split('.')[0]
     args.tf_cfg_train_file_out = os.path.join(args.log_dir, tf_cfg_base)
+    #@ Create the 'frozen_model' directory inside reults/long-name-date/frozen_model
     args.tf_model_output_directory = os.path.join(
         args.results_dir, 'frozen_model')
     # args.tf_model_output_directory = os.path.join(args.results_dir,
@@ -275,6 +283,7 @@ def update_args(args):
 
     args.yolt_classnum = len(args.yolt_object_labels)
 
+    #@ This is where the number of boxes per grid is checked!
     # for yolov2
     args.yolt_final_output = 1 * 1 * \
         args.boxes_per_grid * (args.yolt_classnum + 4 + 1)
@@ -294,6 +303,7 @@ def update_args(args):
         args.slice_sizes_str.split(args.str_delim)).astype(int)
 
     # set test list
+    #@ This is where the number of bands is checked
     try:
         if args.nbands == 3:
             # print ("os.listdir(args.testims_dir_tot:",
